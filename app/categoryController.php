@@ -1,7 +1,7 @@
 <?php 
 
 if (!isset($_SESSION)) {
-	# code...
+	session_start();
 }
 
 
@@ -31,8 +31,12 @@ if (isset($_POST['action'])) {
 				$CategoryController->update($id,$name,$description,$status);
 			break;
 			case 'destroy':
-				# code...
-				break;
+
+			$id = strip_tags($_POST['id']);
+
+			$CategoryController->destroy($id);
+
+			break;
 			
 	}
 }
@@ -100,13 +104,28 @@ class CategoryController
 	}
 
 	public function destroy($id){
-
-		if($conn->connect_error==false){
-
+		$conn = connect();
+		if ($conn->connect_error==false) {
+			
 			if ($id != "") {
+				
 				$query = "delete from categories where id = ?";
-				//$prepared_query =
+				$prepared_query = $conn->prepare($query);
+				$prepared_query->bind_param('i',$id);
+				if ($prepared_query->execute()) {
+
+					header("Location:".$_SERVER['HTTP_REFERER']);
+				}else{
+					header("Location:".$_SERVER['HTTP_REFERER']);
+				}
+
+			}else{
+				header("Location:".$_SERVER['HTTP_REFERER']);
 			}
+
+
+		}else{
+			header("Location:".$_SERVER['HTTP_REFERER']);
 		}
 	}
 }

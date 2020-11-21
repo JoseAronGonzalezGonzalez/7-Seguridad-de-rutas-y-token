@@ -3,7 +3,7 @@
 	$CategoryController =new CategoryController();
 		$categories = $CategoryController->get();
 
-	// echo json_encode($categories);
+	//echo json_encode($categories);
 ?>
 <!DOCTYPE html>
 <html>
@@ -51,33 +51,27 @@
 					Actions
 				</th>		
 			</thead>
-			<?php 
-				foreach ($categories as $category) {
-					echo "
-					<tr>
-						<td>
-							".$category["id"]."
-						</td>
-						<td>
-							".$category["name"]."
-						</td>
-						<td>
-							".$category["description"]."
-						</td>
-						<td>
-								<button onclick='edit(".$category['id'].",\"".$category['name']."\",\"".$category['description']."\",\"".$category['status']."\")' >
-								Edit category
-							<button>
-						</td>
-						<td>
-								<button onclick='remove(".$category['id'].",\"".$category['name']."\",\"".$category['description']."\",\"".$category['status']."\")'>
-								Delete category
-							<button>
-						</td>
-
-					</tr>";
-				}
-			 ?>
+			<?php foreach ($categories as $category): ?>
+				<tr>
+					<td>
+						<?= $category["id"] ?>
+					</td>
+					<td>
+						<?= $category["name"] ?>
+					</td>
+					<td>
+						<?= $category["description"] ?>
+					</td>
+					<td>
+						<button onclick="edit(<?=$category['id']?>,'<?=$category['name']?>','<?=$category['description']?>','<?=$category['status']?>')">
+							Edit category
+						</button>
+						<button onclick="remove(<?=$category['id']?>)">
+							Delete
+						</button>
+					</td>
+				</tr>
+			<?php endforeach ?>
 		</table>
 		<form id="storeForm" action="../app/CategoryController.php" method="POST">
 			 	<fieldset>
@@ -159,11 +153,11 @@
 		}
 
 		function remove(id) {
-			var confirm = prompt("si quier eliminar escriba; "+id);
+			var confirm = prompt("Si quiere eliminar el registro, escriba :"+id);
 			if (confirm == id) {
+
 				document.getElementById('id_destroy').value = id;
 				document.getElementById('destroyForm').submit();
-
 			}
 		}
 	</script>
