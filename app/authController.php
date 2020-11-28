@@ -1,35 +1,38 @@
 <?php 
 
 
-if (!isset($_SESSION)) {
-	session_start();
-}
+include_once 'app.php';
 include_once "connectionController.php";
 
 
 if (isset($_POST['action'])) {
-	$authController = new AuthController();
 
-	switch ($_POST['action']) {
-		case 'register':
+
+	if (isset($_POST['token']) && $_POST['token']==$_SESSION['token']) {
+
+		$authController = new AuthController();
+		
+		switch ($_POST['action']) {
+			case 'register':
 			
 			$name = strip_tags($_POST['name']);
 			$email = strip_tags($_POST['email']);
 			$password = strip_tags($_POST['password']);
 
 			$authController->register($name,$email,$password);
+			break;
 
-		break;
-
-		case 'login':
+			case 'login':
 
 			$email = strip_tags($_POST['email']);
 			$password = strip_tags($_POST['password']);
 
 			$authController->access($email,$password);
-
-		break;
-		
+			break;
+		}
+	}else{
+		$_SESSION['error'] = 'de seguridad';
+		header("location:". $_SERVER['HTTP_REFERER'] );
 	}
 }
 
@@ -105,7 +108,7 @@ class AuthController
 						$_SESSION['email'] = $user['email'];
 
 
-						header("Location:../category");
+						header("Location:".BASE_PATH."categori");
 					}
 
 				}else{

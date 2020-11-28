@@ -1,9 +1,7 @@
 
 <?php
-	if (!isset($_SESSION)) {
-		session_start();
-	}
 
+	include '../app/app.php';
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +27,7 @@
 		<?php include "../layouts/alerts.template.php"; ?>
 
 		
-		<form method="POST" action="../app/authController.php">
+		<form method="POST" action="../auth">
 			<fieldset>
 				<legend>
 					Access
@@ -49,10 +47,11 @@
 				</button>
 
 				<input type="hidden" name="action" value="login">
+				<input type="hidden" name="token" value="<?= $_SESSION['token'] ?>">
 			</fieldset>
 		</form>
 
-		<form method="POST" action="../app/authController.php">
+		<form method="POST" action="../auth">
 			
 			<fieldset >
 				<legend>
@@ -78,6 +77,7 @@
 				</button>
 
 				<input type="hidden" name="action" value="register">
+				<input type="hidden" name="token" value="<?= $_SESSION['token'] ?>">
 			</fieldset>
 		</form>
 </body>
